@@ -1,0 +1,18 @@
+# 本機安裝資訊與使用狀態
+/installation.yaml
+/user.yaml
+
+# 部署產物、同步資料及動態使用者詞庫
+/build/
+/sync/
+*.bin
+*.userdb/
+*.userdb.*
+*.log
+
+# 作業系統與編輯器暫存檔
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*~
