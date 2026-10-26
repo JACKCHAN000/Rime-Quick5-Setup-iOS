@@ -1,15 +1,2 @@
 patch:
   __include: grammar:/hant-cantonese
-
-  # 上屏後聯想，需要輸入法內建 librime-predict。
-  # 詞庫來源：https://github.com/ryanwuson/rime-liur-ios/blob/main/predict.db
-  "engine/processors/@before 0": predictor
-  "engine/translators/@before 0": predict_translator
-  "switches/+":
-    - name: prediction
-      states: [ 關閉聯想, 開啟聯想 ]
-      reset: 1  # 預設開啟；設為 0 可預設關閉。
-  predictor:
-    db: predict.db
-    max_candidates: 9  # 與 default.yaml 的每頁候選數一致。
-    max_iterations: 1  # 每次輸入上屏後聯想一輪。

@@ -31,6 +31,9 @@ switches:
     states: [ 💀, 😄 ]
   - name: full_shape
     states: [ 半角, 全角 ]
+  - name: prediction
+    states: [ 關閉聯想, 開啟聯想 ]
+    reset: 1  # 預設開啟；設為 0 可預設關閉。
 
 
 # 輸入引擎
@@ -39,6 +42,7 @@ engine:
     - lua_processor@select_character          # 以詞定字
     - ascii_composer
     - recognizer
+    - predictor                              # 上屏後聯想，須在 key_binder 之前
     - key_binder
     - speller
     - punctuator
@@ -56,6 +60,7 @@ engine:
     - punct_segmentor
     - fallback_segmentor
   translators:
+    - predict_translator                  # 聯想候選
     - punct_translator
     - script_translator
     - lua_translator@*date_translator    # 時間、日期、星期
@@ -76,6 +81,14 @@ engine:
     - simplifier@simplification                    # 簡繁切換
     - reverse_lookup_filter
     - uniquifier                                    # 去重
+
+# 上屏後聯想，需要輸入法內建 librime-predict。
+# 詞庫來源：https://github.com/ryanwuson/rime-liur-ios/blob/main/predict.db
+predictor:
+  db: predict.db
+  max_candidates: 9  # 與 default.yaml 的每頁候選數一致。
+  max_iterations: 1  # 每次輸入上屏後聯想一輪。
+
 
 # Lua 配置: 日期、時間、星期、ISO 8601、時間戳的觸發關鍵字
 date_translator:

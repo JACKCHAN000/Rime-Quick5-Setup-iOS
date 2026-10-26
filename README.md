@@ -76,8 +76,8 @@ https://codeload.github.com/JACKCHAN000/Rime-Quick5-Setup-iOS/zip/refs/heads/mai
 
 | 檔案或目錄 | 用途 |
 | --- | --- |
-| `quick5_lite.schema.yaml` | 速成方案與輸入引擎設定 |
-| `quick5_lite.custom.yaml` | 啟用粵語語法模型及聯想功能的補丁 |
+| `quick5_lite.schema.yaml` | 速成方案、輸入引擎、選單開關及聯想設定 |
+| `quick5_lite.custom.yaml` | 僅載入粵語語法模型的補丁 |
 | `quick5_lite.extended.dict.yaml` | 中文詞庫載入清單 |
 | `cn_dicts/` | 速成、粵語及其他中文詞庫 |
 | `melt_eng.schema.yaml`、`melt_eng.dict.yaml` | 英文方案及詞庫載入設定 |
@@ -92,29 +92,30 @@ https://codeload.github.com/JACKCHAN000/Rime-Quick5-Setup-iOS/zip/refs/heads/mai
 
 ## 聯想設定
 
-`quick5_lite.custom.yaml` 已加入聯想處理器、翻譯器及開關：
+聯想設定位於 `quick5_lite.schema.yaml`：`predictor` 處理器放在 `key_binder` 之前，`predict_translator` 放在翻譯器清單開頭，`prediction` 開關與原有的中英、標點、繁簡、Emoji 及全半形開關一起列在 `switches` 中。
+
+可在方案內調整以下參數：
+
+```yaml
+predictor:
+  db: predict.db
+  max_candidates: 9
+  max_iterations: 1
+```
+
+`quick5_lite.custom.yaml` 僅保留語法模型載入：
 
 ```yaml
 patch:
   __include: grammar:/hant-cantonese
-  "engine/processors/@before 0": predictor
-  "engine/translators/@before 0": predict_translator
-  "switches/+":
-    - name: prediction
-      states: [ 關閉聯想, 開啟聯想 ]
-      reset: 1
-  predictor:
-    db: predict.db
-    max_candidates: 9
-    max_iterations: 1
 ```
 
-- 在方案選單切換「關閉聯想／開啟聯想」。若要預設關閉，將 `reset` 改為 `0`。
+- 在方案選單切換「關閉聯想／開啟聯想」。若要預設關閉，將 `quick5_lite.schema.yaml` 中 `prediction` 開關的 `reset` 改為 `0`。
 - `max_candidates` 設定聯想候選數，目前為 `9`，與每頁候選數一致。
 - `max_iterations` 設定連續聯想輪數，目前為 `1`。
 - `predict.db` 提供上屏後的候選；`.gram` 模型協助輸入過程中的組詞與排序，兩者用途不同。
 
-變更設定後須重新部署。請將上述項目合併在現有的同一個 `patch:` 區塊內。
+變更設定後須重新部署。聯想設定請直接修改 `quick5_lite.schema.yaml` 中的對應欄位。
 
 ## 自訂
 
@@ -129,7 +130,7 @@ patch:
 - **找不到 `predictor` 或 `predict_translator`**：檢查輸入法是否包含 `librime-predict`。
 - **部署失敗**：先檢查部署日誌、YAML 縮排與檔案是否完整；尤其不要漏傳 `lua/`、`opencc/`、詞庫及模型檔案。
 
-已檢查聯想設定的 YAML 結構、元件位置及詞庫完整性；不同元書版本的聯想支援與候選結果仍以實機測試為準。
+已檢查聯想設定的 YAML 結構、元件位置及詞庫完整性；使用者已確認重新部署後，聯想功能與方案選單均已生效。
 
 ## 來源與致謝
 
