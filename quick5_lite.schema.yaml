@@ -53,10 +53,6 @@ engine:
     - ascii_segmentor
     - matcher
     - abc_segmentor
-    - affix_segmentor@cantonese_input
-    - affix_segmentor@pinyin_input
-    - affix_segmentor@cantonese
-    - affix_segmentor@pinyin
     - punct_segmentor
     - fallback_segmentor
   translators:
@@ -73,13 +69,12 @@ engine:
     - lua_translator@*force_gc           # 暴力 GC
     - lua_translator@*calculator    # 計算器
   filters:
-    #- lua_filter@*is_in_user_dict # 用戶詞典的詞加上一個*
+    - lua_filter@*is_in_user_dict # 用戶詞典的詞加上一個*
     - lua_filter@*autocap_filter                     # 英文自動大寫
     # - lua_filter@*pin_cand_filter                    # 置頂候選項（順序要求：置頂候選項 > Emoji > 簡繁切換）
     - lua_filter@*long_word_filter                   # 長詞優先（順序要求：長詞優先 > Emoji）
     - simplifier@emoji                              # Emoji
     - simplifier@simplification                    # 簡繁切換
-    - reverse_lookup_filter
     - uniquifier                                    # 去重
 
 # 上屏後聯想，需要輸入法內建 librime-predict。
@@ -192,7 +187,6 @@ recognizer:
   import_preset: default  # 從 default.yaml 繼承通用的
   patterns:  # 再增加方案專有的：
     punct: "^/([0-9]|10|[A-Za-z]+)$"    # 響應 symbols_v.yaml 的 symbols，用 'v' 替換 '/'
-    radical_lookup: "^uU[a-z]+$"        # 響應部件拆字的反查，與 radical_lookup/prefix 匹配
     unicode: "^U[a-f0-9]+"              # 腳本將自動獲取第 2 個字符 U 作為觸發前綴，響應 lua_translator@*unicode，輸出 Unicode 字符
     number: "^R[0-9]+[.]?[0-9]*"        # 腳本將自動獲取第 2 個字符 R 作為觸發前綴，響應 lua_translator@*number_translator，數字金額大寫
     gregorian_to_lunar: "^N[0-9]{1,8}"  # 腳本將自動獲取第 2 個字符 N 作為觸發前綴，響應 lua_translator@*lunar，公曆轉農曆，輸入 N20240115 得到「二〇二三年臘月初五」
