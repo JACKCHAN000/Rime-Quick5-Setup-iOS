@@ -11,6 +11,14 @@ function M.init(env)
 end
 
 function M.func(input, env)
+    -- 關閉時直接傳遞候選，不執行本 filter 的任何標記功能。
+    if not env.engine.context:get_option("user_dict_mark") then
+        for cand in input:iter() do
+            yield(cand)
+        end
+        return
+    end
+
     for cand in input:iter() do
         -- 用户词库，加上*号
         if cand.type == "user_phrase" then

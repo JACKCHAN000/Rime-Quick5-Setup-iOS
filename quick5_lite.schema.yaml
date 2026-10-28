@@ -31,6 +31,9 @@ switches:
     states: [ 💀, 😄 ]
   - name: full_shape
     states: [ 半角, 全角 ]
+  - name: user_dict_mark
+    states: [ 關閉詞典標記, 開啟詞典標記 ]
+    # 不設 reset：首次預設關閉，之後由 switcher/save_options 記住狀態。
   - name: prediction
     states: [ 關閉聯想, 開啟聯想 ]
     reset: 1  # 預設開啟；設為 0 可預設關閉。

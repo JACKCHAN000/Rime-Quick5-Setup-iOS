@@ -33,6 +33,7 @@ switcher:
     - simplification
     - emoji
     - full_shape
+    - user_dict_mark
   fold_options: true            # 呼出時是否摺疊，多方案時建議摺疊 true ，一個方案建議展開 false
   abbreviate_options: true      # 摺疊時是否縮寫選項
   option_list_separator: ' / '  # 摺疊時的選項分隔符
